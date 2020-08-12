@@ -1,3 +1,4 @@
+import pymongo
 from pymongo import MongoClient
 from flask import Flask, render_template, jsonify, request
 
@@ -18,8 +19,10 @@ def show_stars():
     # 1. db에서 mystar 목록 전체를 검색합니다.
     # - ID는 제외하고 like 가 많은 순으로 정렬합니다.
     # - 참고) find({},{'_id':False}), sort()를 활용하면 굿!
+    # - .sort([("field1", pymongo.ASCENDING), ("field2", pymongo.DESCENDING)])
+    # - .sort("_id", 1)
 
-    stars = list(db.mystar.find({}, {'_id': 0}))
+    stars = list(db.mystar.find({}, {'_id': 0}).sort("like", pymongo.DESCENDING))
     # " db에서, mystar 를 찾아올(find) 건데.. _id 는 안 가져올꺼다. "
     # 그걸 list 화 해서 [['name': 머머, 'url': 머머머], '..', ...] stars 라고 부를 거다.
     # 애초에 db = client.dbsparta 라고 했고, client = MongoClient('localhost', 27017) 이라고 정했다는 걸 기억하자.

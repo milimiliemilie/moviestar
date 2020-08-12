@@ -70,13 +70,13 @@
             </div>
         </div>
         <footer class="card-footer">
-            <a href="#" onclick="likeStar('김다미')" class="card-footer-item has-text-info">
+            <a href="#" onclick="likeStar('${name}')" class="card-footer-item has-text-info">
                 위로!
                 <span class="icon">
               <i class="fas fa-thumbs-up"></i>
             </span>
             </a>
-            <a href="#" onclick="deleteStar('김다미')" class="card-footer-item has-text-danger">
+            <a href="#" onclick="deleteStar('${name}')" class="card-footer-item has-text-danger">
                 삭제
                 <span class="icon">
               <i class="fas fa-ban"></i>
@@ -96,11 +96,15 @@
             $.ajax({
                 type: 'POST',
                 url: '/api/like',
-                data: {},
+                data: {'name_give': name},  // app.py 에서 ... Flask 를 통해 ... name_give 를 주기로 했으니까.
                 success: function (response) {
                     if (response['result'] == 'success') {
-                        let msg = response['msg'];
-                        alert(msg);
+                        // DB 업뎃을 쳐주고,
+                        // 페이지도 reload 해준다.
+                        // - Q. 창을 다 업뎃하지 않고 특정인 좋아요만 바꾸면 안돼요?
+                        // - A. 그러면 실시간으로 다른 좋아요 바뀌는걸 못 잡아요.
+                        // - 실시간으로 좋아요 수 바뀌게 하려면 websocket 을 배워야 해요. (아직은 넘사벽)
+                        window.location.reload();
                     }
                 }
             });
