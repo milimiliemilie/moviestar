@@ -105,6 +105,8 @@
                         // - A. 그러면 실시간으로 다른 좋아요 바뀌는걸 못 잡아요.
                         // - 실시간으로 좋아요 수 바뀌게 하려면 websocket 을 배워야 해요. (아직은 넘사벽)
                         window.location.reload();
+                    } else {
+                        alert('안 되네요. 서버 담당자가 좀 봐야 할 것 같습니다.')
                     }
                 }
             });
@@ -114,11 +116,14 @@
             $.ajax({
                 type: 'POST',
                 url: '/api/delete',
-                data: {},
+                data: {'name_give': name},
+                // data 에 name_give 를 알려주는 것을 잊지 말자.
                 success: function (response) {
                     if (response['result'] == 'success') {
-                        let msg = response['msg'];
-                        alert(msg);
+                        alert('삭제되었습니다. 이제 돌이킬 수 없어요~');
+                        window.location.reload();
+                    } else {
+                        alert('안 되네요. 서버 담당자가 좀 봐야 할 것 같습니다.')
                     }
                 }
             });

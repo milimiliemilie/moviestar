@@ -71,7 +71,7 @@ def delete_star():
     name_receive = request.form['name_give']
 
     # 2. mystar 목록에서 delete_one으로 name이 name_receive와 일치하는 star를 제거합니다.
-    db.mystar.delete_one({'name_receive'})
+    db.mystar.delete_one({'name': name_receive})
 
     # 3. 성공하면 success 메시지를 반환합니다.
     return jsonify({'result': 'success', 'msg': 'delete 연결되었습니다!'})
