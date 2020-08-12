@@ -12,13 +12,24 @@ def home():
     return render_template('index.html')
 
 
-# API 역할을 하는 부분
+# API 역할을 하는 부분 --> 성공하면 .../api/list 쳤을 때, JSON 형태가 뜬다.
 @app.route('/api/list', methods=['GET'])
 def show_stars():
     # 1. db에서 mystar 목록 전체를 검색합니다. ID는 제외하고 like 가 많은 순으로 정렬합니다.
     # 참고) find({},{'_id':False}), sort()를 활용하면 굿!
+
+    stars = list(db.mystar.find({}, {'_id': 0}))
+
+    stars_sorted = sorted(stars, key=list)
+
+    # 2. articles라는 키 값으로 articles 정보 보내주기
+    result = {
+        'result': 'success',
+        'stars_list': stars_sorted,
+    }
+
     # 2. 성공하면 success 메시지와 함께 stars_list 목록을 클라이언트에 전달합니다.
-    return jsonify({'result': 'success', 'msg': 'list 연결되었습니다!'})
+    return jsonify(result)
 
 
 @app.route('/api/like', methods=['POST'])
