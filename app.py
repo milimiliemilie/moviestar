@@ -18,14 +18,13 @@ def show_stars():
     # 1. db에서 mystar 목록 전체를 검색합니다. ID는 제외하고 like 가 많은 순으로 정렬합니다.
     # 참고) find({},{'_id':False}), sort()를 활용하면 굿!
 
-    stars = list(db.mystar.find({}, {'_id': 0}))
-
-    stars_sorted = sorted(stars, key=list)
+    stars = list(db.mystar.find({}, {'_id': 0}))  # pymongo 의 db 중에서, mystar 를 찾아올(find) 건데.. _id 는 안 가져올꺼다.
+                                                  # 그걸 list 화 해서 [['name': 머머, 'url': 머머머], '..', ...] stars 라고 부를 거다.
 
     # 2. articles라는 키 값으로 articles 정보 보내주기
     result = {
         'result': 'success',
-        'stars_list': stars_sorted,
+        'stars_list': stars,  # index.html 에서, " var stars_list = response['stars_list'] " 라고 하면서 db를 불러올 것이다.
     }
 
     # 2. 성공하면 success 메시지와 함께 stars_list 목록을 클라이언트에 전달합니다.

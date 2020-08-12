@@ -41,9 +41,52 @@
                 url: '/api/list',
                 data: {},
                 success: function (response) {
-                    if (response['result'] == 'success') {
-                        let msg = response['msg'];
-                        alert(msg);
+                    if (response['result'] == 'success') {  // response 는, json 자체를 말한다.
+                        var stars_list = response['stars_list'];  // app.py 의 'stars_list': stars 를 뜻한다
+                        for (let i = 0; i < stars_list.length; i++) {
+                            var star = stars_list[i];  // 순서대로 개체를 하나씩 찝어준다
+                            var img_url = star['img_url'];  // 그 담엔 --> 딕셔너리에서 하나씩 꺼내준다
+                            var like = star['like'];
+                            var name = star['name'];
+                            var recent = star['recent'];
+                            var url = star['url'];
+
+                            var tempHtml = `
+<div class="card">
+        <div class="card-content">
+            <div class="media">
+                <div class="media-left">
+                    <figure class="image is-48x48">
+                        <img
+                                src="${img_url}"
+                                alt="Placeholder image"
+                        />
+                    </figure>
+                </div>
+                <div class="media-content">
+                    <a href="${url}#" target="_blank" class="star-name title is-4">${name} (좋아요: ${like})</a>
+                    <p class="subtitle is-6">${recent}</p>
+                </div>
+            </div>
+        </div>
+        <footer class="card-footer">
+            <a href="#" onclick="likeStar('김다미')" class="card-footer-item has-text-info">
+                위로!
+                <span class="icon">
+              <i class="fas fa-thumbs-up"></i>
+            </span>
+            </a>
+            <a href="#" onclick="deleteStar('김다미')" class="card-footer-item has-text-danger">
+                삭제
+                <span class="icon">
+              <i class="fas fa-ban"></i>
+            </span>
+            </a>
+        </footer>
+    </div>
+                            `
+                            $('#star-box').append(tempHtml)
+                        }
                     }
                 }
             });
@@ -92,38 +135,7 @@
     </div>
 </section>
 <div class="star-list" id="star-box">
-    <div class="card">
-        <div class="card-content">
-            <div class="media">
-                <div class="media-left">
-                    <figure class="image is-48x48">
-                        <img
-                                src="https://search.pstatic.net/common/?src=https%3A%2F%2Fssl.pstatic.net%2Fsstatic%2Fpeople%2Fportrait%2F201807%2F20180731143610623-6213324.jpg&type=u120_150&quality=95"
-                                alt="Placeholder image"
-                        />
-                    </figure>
-                </div>
-                <div class="media-content">
-                    <a href="#" target="_blank" class="star-name title is-4">김다미 (좋아요: 3)</a>
-                    <p class="subtitle is-6">안녕, 나의 소울메이트(가제)</p>
-                </div>
-            </div>
-        </div>
-        <footer class="card-footer">
-            <a href="#" onclick="likeStar('김다미')" class="card-footer-item has-text-info">
-                위로!
-                <span class="icon">
-              <i class="fas fa-thumbs-up"></i>
-            </span>
-            </a>
-            <a href="#" onclick="deleteStar('김다미')" class="card-footer-item has-text-danger">
-                삭제
-                <span class="icon">
-              <i class="fas fa-ban"></i>
-            </span>
-            </a>
-        </footer>
-    </div>
+
 </div>
 </body>
 </html>
